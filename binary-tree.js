@@ -8,7 +8,9 @@ class Node {
 
 class Tree {
     constructor(arr) {
+        // Remove duplicate elements from array and sort array in ascending order for bst
         const sortedArray = [...new Set(arr)].sort((a, b) => a - b)
+        // Set root node of tree with balanced binary search tree
         this.root = this.buildTree(sortedArray)
     }
     buildTree(sortedArray) {
@@ -35,8 +37,37 @@ class Tree {
         }
         return node
     }
-    delete(data) {
+    minValue(node = this.root) {
+        if (!node.left) {
+            return node.value
+        } else {
+            return this.minValue(node.left)
+        }
+    }
+    delete(value) {
+        this.root = this.deleteNode(value, this.root);
+    }
+    deleteNode(value, node = this.root) {
+        if (node === null) return node;
 
+        if (node.data < value) {
+            node.right = this.deleteNode(value, node.right);
+        } else if (value < node.data) {
+            node.left = this.deleteNode(value, node.left);
+        } else {
+            if (!node.left && !node.right) {
+                return null;
+            }
+            if (!node.left) {
+                return node.right;
+            } else if (!node.right) {
+                return node.left;
+            }
+            const minVal = this.minValue(node.right);
+            node.data = minVal
+            node.right = this.deleteNode(minVal, node.right);
+        }
+        return node;
     }
     prettyPrint(node, prefix = "", isLeft = true) {
         if (node.right !== null) {
@@ -55,5 +86,6 @@ const tree = new Tree([1, 6, 8, 9])
 
 tree.insert(10)
 tree.insert(12)
+tree.delete(12)
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
