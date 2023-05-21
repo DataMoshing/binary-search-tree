@@ -8,8 +8,8 @@ class Node {
 
 class Tree {
     constructor(arr) {
-        this.sortedArray = [...new Set(arr)].sort((a, b) => a - b)
-        this.root = this.buildTree(this.sortedArray)
+        const sortedArray = [...new Set(arr)].sort((a, b) => a - b)
+        this.root = this.buildTree(sortedArray)
     }
     buildTree(sortedArray) {
         if (sortedArray.length === 0) return null
@@ -22,24 +22,38 @@ class Tree {
 
         return node
     }
-    insert(root, key) {
-        if (root === null) {
-            root = new Node(key)
-            return root
+    insert(value, node = this.root) {
+        if (node === null) {
+            return new Node(value)
         }
-        if (key < root.key) {
-            root.left = this.insert(root.left, key)
-        } else if (key > root.key) {
-            root.right = this.insert(root.right, key)
+        if (node.data === value) return node
+
+        if (node.data < value) {
+            node.right = this.insert(value, node.right)
+        } else {
+            node.left = this.insert(value, node.left)
         }
-        return root
+        return node
+    }
+    delete(data) {
+
+    }
+    prettyPrint(node, prefix = "", isLeft = true) {
+        if (node.right !== null) {
+            this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+        }
+        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+        if (node.left !== null) {
+            this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+        }
     }
 }
 
 
-let arr = [1, 6, 8, 9, 11, 67, 2, 4]
-// [1,2,4,6,8,9,11,67]
-const tree = new Tree(arr)
 
-console.log(tree.buildTree(arr))
+const tree = new Tree([1, 6, 8, 9])
 
+tree.insert(10)
+tree.insert(12)
+// tree.buildTree(tree)
+tree.prettyPrint(tree.root)
