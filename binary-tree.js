@@ -14,7 +14,8 @@ class Tree {
         this.root = this.buildTree(sortedArray)
     }
     buildTree(sortedArray) {
-        if (sortedArray.length === 0) return null
+        if (sortedArray.length === 0)
+            return null
 
         let mid = parseInt((sortedArray.length) / 2)
         let node = new Node(sortedArray[mid])
@@ -28,7 +29,8 @@ class Tree {
         if (node === null) {
             return new Node(value)
         }
-        if (node.data === value) return node
+        if (node.data === value)
+            return node
 
         if (node.data < value) {
             node.right = this.insert(value, node.right)
@@ -48,7 +50,8 @@ class Tree {
         this.root = this.deleteNode(value, this.root);
     }
     deleteNode(value, node = this.root) {
-        if (node === null) return node;
+        if (node === null)
+            return node;
 
         if (node.data < value) {
             node.right = this.deleteNode(value, node.right);
@@ -69,6 +72,15 @@ class Tree {
         }
         return node;
     }
+    find(value, node = this.root) {
+        if (node === null || node.data === value)
+            return node
+        else if (value < node.data)
+            return this.find(value, node.left)
+        else
+            return this.find(value, node.right)
+    }
+
     prettyPrint(node, prefix = "", isLeft = true) {
         if (node.right !== null) {
             this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
@@ -87,5 +99,6 @@ const tree = new Tree([1, 6, 8, 9])
 tree.insert(10)
 tree.insert(12)
 tree.delete(12)
+console.log(tree.find(1))
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
