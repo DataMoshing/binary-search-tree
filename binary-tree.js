@@ -80,7 +80,22 @@ class Tree {
         else
             return this.find(value, node.right)
     }
+    levelOrder(arr = [], queue = [], root = this.root) {
+        if (root === null)
+            return
 
+        arr.push(root.data)
+
+        queue.push(root.left)
+        queue.push(root.right)
+
+        while (queue.length) {
+            const level = queue[0]
+            queue.shift()
+            this.levelOrder(arr, queue, level)
+        }
+        return arr
+    }
     prettyPrint(node, prefix = "", isLeft = true) {
         if (node.right !== null) {
             this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
@@ -102,3 +117,5 @@ tree.delete(12)
 console.log(tree.find(1))
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
+
+console.log(tree.levelOrder())
