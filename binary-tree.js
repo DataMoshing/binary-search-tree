@@ -82,7 +82,7 @@ class Tree {
     }
     levelOrder(arr = [], queue = [], root = this.root) {
         if (root === null)
-            return
+            return null
 
         arr.push(root.data)
 
@@ -94,6 +94,48 @@ class Tree {
             queue.shift()
             this.levelOrder(arr, queue, level)
         }
+        return arr
+    }
+    inorder(arr = [], node = this.root) {
+        if (node === null)
+            return null
+
+        if (node.left) {
+            this.inorder(arr, node.left)
+        }
+        arr.push(node.data)
+
+        if (node.right) {
+            this.inorder(arr, node.right)
+        }
+        return arr
+    }
+    preorder(arr = [], node = this.root) {
+        if (node === null)
+            return null
+
+        arr.push(node.data)
+
+        if (node.left) {
+            this.preorder(arr, node.left)
+        }
+        if (node.right) {
+            this.preorder(arr, node.right)
+        }
+        return arr
+    }
+    postorder(arr = [], node = this.root) {
+        if (node === null) {
+            return null
+        }
+        if (node.left) {
+            this.postorder(arr, node.left)
+        }
+        if (node.right) {
+            this.postorder(arr, node.right)
+        }
+        arr.push(node.data)
+
         return arr
     }
     prettyPrint(node, prefix = "", isLeft = true) {
@@ -114,8 +156,12 @@ const tree = new Tree([1, 6, 8, 9])
 tree.insert(10)
 tree.insert(12)
 tree.delete(12)
-console.log(tree.find(1))
+// console.log(tree.find(1))
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
 
 console.log(tree.levelOrder())
+console.log(tree.inorder())
+console.log(tree.preorder())
+console.log(tree.postorder())
+
