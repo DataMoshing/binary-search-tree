@@ -151,8 +151,31 @@ class Tree {
             return right + 1;
         }
     }
-    depth() {
+    depth(node, root = this.root, level = 0) {
+        if (!node) {
+            return null
+        }
+        if (root === null) {
+            return 0
+        }
+        if (root.data === node.data) {
+            return level
+        }
 
+        let count = this.depth(node, root.left, level + 1)
+
+        if (count !== null) {
+            return count
+        }
+        return this.depth(node, root.right, level + 1)
+    }
+    isBalanced(node = this.root) {
+        if (node === null) {
+            return true
+        }
+        const difference = Math.abs(this.height(node.left) - this.height(node.right))
+
+        return difference <= 1 && this.isBalanced(node.left) && this.isBalanced(node.right)
     }
     prettyPrint(node, prefix = "", isLeft = true) {
         if (node.right !== null) {
@@ -171,14 +194,16 @@ const tree = new Tree([1, 6, 8, 9])
 
 tree.insert(10)
 tree.insert(12)
+tree.insert(2);
 // tree.delete(12)
 // console.log(tree.find(1))
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
 
-console.log(tree.levelOrder())
-console.log(tree.inorder())
-console.log(tree.preorder())
-console.log(tree.postorder())
-console.log(tree.height(12))
-
+// console.log(tree.levelOrder())
+// console.log(tree.inorder())
+// console.log(tree.preorder())
+// console.log(tree.postorder())
+console.log(tree.height(tree.find(9)))
+console.log(tree.depth(tree.find(2)))
+console.log(tree.isBalanced())
