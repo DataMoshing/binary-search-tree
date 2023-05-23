@@ -138,6 +138,22 @@ class Tree {
 
         return arr
     }
+    height(node = this.root) {
+        if (node === null) {
+            return -1
+        }
+        let left = this.height(node.left)
+        let right = this.height(node.right)
+
+        if (left > right) {
+            return left + 1;
+        } else {
+            return right + 1;
+        }
+    }
+    depth() {
+
+    }
     prettyPrint(node, prefix = "", isLeft = true) {
         if (node.right !== null) {
             this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
@@ -155,7 +171,7 @@ const tree = new Tree([1, 6, 8, 9])
 
 tree.insert(10)
 tree.insert(12)
-tree.delete(12)
+// tree.delete(12)
 // console.log(tree.find(1))
 // tree.buildTree(tree)
 tree.prettyPrint(tree.root)
@@ -164,4 +180,5 @@ console.log(tree.levelOrder())
 console.log(tree.inorder())
 console.log(tree.preorder())
 console.log(tree.postorder())
+console.log(tree.height(12))
 
